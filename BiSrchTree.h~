@@ -1,0 +1,25 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+#ifndef BISRCHTREE_H
+#define BISRCHTREE_H
+
+Struct node{
+  int data;
+  node* right;
+  node* left;
+};
+
+class BiSrchTree{
+ public:
+  int insert(int data);
+  int retrieve(int data);
+  int remove(int data);
+  int visulaize();
+ private:
+  node* head;
+};
+
+#endif
