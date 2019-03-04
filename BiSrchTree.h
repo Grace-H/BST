@@ -17,9 +17,11 @@ class BiSrchTree{
   BiSrchTree();
   ~BiSrchTree();
   int insert(int data);
-  int retrieve(int data);
+  int insert(node* newnode, node* current);
+  int contains(int data);
   int remove(int data);
-  int visulaize();
+  int visualize();
+  int visualize(node* cur, int level);
  private:
   node* head;
 };
