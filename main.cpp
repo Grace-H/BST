@@ -112,5 +112,6 @@ int insert(BiSrchTree* tree, char* nums){
     tree->insert(cur);
     str = strtok(NULL, " ");
   }
+  tree->visualize();
   return 0;
 }
