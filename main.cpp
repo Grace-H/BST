@@ -7,6 +7,7 @@
 
 using namespace std;
 
+int remove(BiSrchTree* tree, char* nums);
 int insert(BiSrchTree* tree, char* nums);
 
 int main(){
@@ -79,10 +80,11 @@ int main(){
     }
     //remove from tree
     else if(strcmp(removestr, input) == 0){
-      cout << "Enter the number to remove from tree: " << endl;
+      cout << "Enter spaced-seperated numbers to remove from tree: " << endl;
       cin.get(nums, 100000);
       cin.get();
       //remove
+      remove(tree, nums);
     }
     else if(strcmp(printstr, input) == 0){
       //visualize
@@ -95,6 +97,24 @@ int main(){
       cout << "not an option" << endl;
     }
   }
+  return 0;
+}
+
+//remove numbers in tree from char* array
+int remove(BiSrchTree* tree, char* nums){
+  //get token
+  int cur = 0;
+  char* str;
+  str = strtok(nums, " ");
+  
+  while(str != NULL){
+    //convert to int  
+    cur = atoi(str);
+    //insert into heap  
+    tree->remove(cur);
+    str = strtok(NULL, " ");
+  }
+  tree->visualize();
   return 0;
 }
 
