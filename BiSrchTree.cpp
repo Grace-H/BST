@@ -9,10 +9,9 @@ BiSrchTree::BiSrchTree(){
 }
 
 BiSrchTree::~BiSrchTree(){
-  //call remove function on head until empty
-  //while(head != NULL){
-  //remove(head->data);
-  //}
+  while(head != NULL){
+    remove(head->data);
+  }
 }
 
 int BiSrchTree::insert(int data){
@@ -87,8 +86,114 @@ int BiSrchTree::contains(int data, node* cur){
 
 int BiSrchTree::remove(int data){
   cout << data << " exists: " << contains(data, head) << endl;
+  //confirm node exists
   if(contains(data, head) == 0){
-    remove(data, head);
+    //find node in tree
+    bool found = false;
+    node* parent = NULL;
+    node* cur = head;
+    while(!found){
+      cout << "cur: " << cur->data << endl;
+      if(cur->data == data){
+	cout << "found" << endl;
+	found = true;
+      }
+      else if(cur->data < data){
+	cout << "going left" << endl;
+	parent = cur;
+	cur = cur->left;
+      }
+      else if(cur->data > data){
+	cout << "going right" << endl;
+	parent = cur;
+	cur = cur->right;
+      }
+    }
+    cout << "found node: " << cur->data << endl;
+    //if node has two children
+    if(cur->left != NULL && cur->right != NULL){
+      cout << "has two children" << endl;
+      //find next smallest node
+      node* prev = cur;
+      node* replace = cur->right;
+      while(replace->left != NULL){
+	prev = replace;
+	replace = replace->left;
+      }
+
+      cout << "found replacement: " << replace->data << endl;
+      //if it has a left child, assign that to parent
+      if(replace->left != NULL){
+	cout << "has left child" << endl;
+	prev->right = replace->left;
+      }
+      
+      //transfer children
+      if(cur->right != replace){
+	replace->right = cur->right;
+      }
+      else{
+	replace->right = NULL;
+      }
+      if(cur->left != replace){
+	replace->left = cur->left;
+      }
+      else{
+	replace->left = NULL;
+      }
+      
+      //point parent to it
+      if(cur == head){
+	head = replace;
+      }
+      else if(cur->data <= parent->data){
+	cout << "cur is a right child" << endl;
+	parent->right = replace;
+      }
+      else{
+	cout << "cur is a left child" << endl;
+	parent->left = replace;
+      }
+      //      visualize();
+      cout << "done" << endl;
+    }
+    //if node has left child
+    else if(cur->left != NULL){
+      if(cur == head){
+	head = cur->left;
+      }
+      else if(cur->data <= parent->data){
+	parent->left = cur->left;
+      }
+      else{
+	parent->right = cur->right;
+      }
+    }  
+    //if node has right child
+    else if(cur->right != NULL){
+      if(cur == head){
+	head = cur->right;
+      }
+      else if(cur->data <= parent->data){
+	parent->left = cur->left;
+      }
+      else{
+	parent->right = cur->right;
+      }
+    }  
+    //if node has no children
+    else{
+      if(cur == head){
+	head = NULL;
+      }
+      else if(cur->data <= parent->data){
+	parent->left = NULL;
+      }
+      else{
+	parent->right = NULL;
+      }
+    }
+    delete cur;
   }
   else{
     cout << "Does not exist: " << data << endl;
