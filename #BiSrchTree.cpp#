@@ -110,9 +110,11 @@ int BiSrchTree::remove(int data){
       }
     }
     cout << "found node: " << cur->data << endl;
+
     //if node has two children
     if(cur->left != NULL && cur->right != NULL){
       cout << "has two children" << endl;
+
       //find next smallest node
       node* prev = cur;
       node* replace = cur->right;
@@ -121,45 +123,14 @@ int BiSrchTree::remove(int data){
 	replace = replace->left;
       }
 
+      //print info about replace
       cout << "found replacement: " << replace->data << endl;
       cout << "replace->right: " << replace->right << endl;
       cout << "replace->left: " << replace->left << endl;
-      if(cur->right == replace){
-	cout << "relace is cur's child" << endl;
-	parent->right = replace;
-	replace->left = cur->left;
-      }
 
-      else{
-      //if it has a right child, assign that to parent
-      if(replace->right != NULL){
-	cout << "has right child" << endl;
-	prev->left = replace->right;
-      }
-      } 
-      //transfer children from cur to replacement
-      //don't do if replacement is cur's child
-      /*   if(cur->right != replace){
-	replace->right = cur->right;
-      }
-      if(cur->left != replace){
-	replace->left = cur->left;
-      }
- 
-      //point parent to it
-      if(cur == head){
-	cout << "cur is head " << endl;
-	head = replace;
-      }
-      else if(cur->data <= parent->data){
-	cout << "cur is a right child" << endl;
-	parent->right = replace;
-      }
-      else{
-	cout << "cur is a left child" << endl;
-	parent->left = replace;
-      }
-      */
+
+      
+      //test code
       visualize();
       cout << "done" << endl;
     }
