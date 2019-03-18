@@ -38,31 +38,31 @@ int BiSrchTree::insert(int data){
 
 int BiSrchTree::insert(node* newnode, node* current){
   //determine if newnode goes to left or right
-  cout << "newnode: " << newnode->data << endl;
-  cout << "current: " << current->data << endl;
+  //cout << "newnode: " << newnode->data << endl;
+  //cout << "current: " << current->data << endl;
   //left
-  if(current->data < newnode->data){
-    cout << "current is less" << endl;
+  if(current->data >= newnode->data){
+    //cout << "current is less" << endl;
     //if no left child
     if(current->left == NULL){
       current->left = newnode;
-      cout << "I'm a left child" << endl;
+      //cout << "I'm a left child" << endl;
     }
     //else move to child
     else{
-      cout << "moving to the left" << endl;
+      //cout << "moving to the left" << endl;
       insert(newnode, current->left);
     }
   }
-  else if(current->data >= newnode->data){
-    cout << "current is more" << endl;
+  else if(current->data < newnode->data){
+    //cout << "current is more" << endl;
     //if no right child
     if(current->right == NULL){
       current->right = newnode;
-      cout << "I'm a right child" << endl;
+      //     cout << "I'm a right child" << endl;
     }
     else{
-      cout << "moving to the right" << endl;
+      // cout << "moving to the right" << endl;
       insert(newnode, current->right);
     }
   }
@@ -73,10 +73,10 @@ int BiSrchTree::contains(int data, node* cur){
   if(data == cur->data){
     return 0;
   }
-  else if(data > cur->data && cur->left != NULL){
+  else if(data <= cur->data && cur->left != NULL){
     return contains(data, cur->left);
   }
-  else if(data <= cur->data && cur->right != NULL){
+  else if(data > cur->data && cur->right != NULL){
     return contains(data, cur->right);
   }
   else{
@@ -91,91 +91,88 @@ int BiSrchTree::remove(int data){
     //find node in tree
     bool found = false;
     node* parent = NULL;
-    node* cur = head;
+    node* todelete = head;
     while(!found){
-      cout << "cur: " << cur->data << endl;
-      if(cur->data == data){
-	cout << "found" << endl;
+      //cout << "cur: " << cur->data << endl;
+      if(todelete->data == data){
+	//cout << "found" << endl;
 	found = true;
       }
-      else if(cur->data < data){
-	cout << "going left" << endl;
-	parent = cur;
-	cur = cur->left;
+      else if(todelete->data > data){
+	//cout << "going left" << endl;
+	parent = todelete;
+	todelete = todelete->left;
       }
-      else if(cur->data > data){
-	cout << "going right" << endl;
-	parent = cur;
-	cur = cur->right;
+      else if(todelete->data < data){
+	//	cout << "going right" << endl;
+	parent = todelete;
+	todelete = todelete->right;
       }
     }
-    cout << "found node: " << cur->data << endl;
+    cout << "todelete: " << todelete->data << endl;
+    cout << "parent: " << parent->data << endl;
 
-    //if node has two children
-    if(cur->left != NULL && cur->right != NULL){
-      cout << "has two children" << endl;
-
-      //find next smallest node
-      node* prev = cur;
-      node* replace = cur->right;
-      while(replace->left != NULL){
-	prev = replace;
-	replace = replace->left;
-      }
-
-      //print info about replace
-      cout << "found replacement: " << replace->data << endl;
-      cout << "replace->right: " << replace->right << endl;
-      cout << "replace->left: " << replace->left << endl;
-
-
-      
-      //test code
-      visualize();
-      cout << "done" << endl;
+    if(todelete->left == NULL){
+      cout << "todelete has no left child" << endl;
     }
-       
-   //if node has left child
-    else if(cur->left != NULL){
-      if(cur == head){
-	head = cur->left;
-      }
-      else if(cur->data <= parent->data){
-	parent->left = cur->left;
-      }
-      else{
-	parent->right = cur->right;
-      }
-    }  
-    //if node has right child
-    else if(cur->right != NULL){
-      if(cur == head){
-	head = cur->right;
-      }
-      else if(cur->data <= parent->data){
-	parent->left = cur->left;
+    
+    //IF todelete has no children
+    if(todelete->left == NULL && todelete->right == NULL){
+      cout << "todelete has no children" << endl;
+      if(todelete != head){
+	if(parent->left == todelete){
+	  parent->left = NULL;
+	}
+	else if(parent->right == todelete){
+	  parent->right = NULL;
+	}
       }
       else{
-	parent->right = cur->right;
-      }
-    }  
-    //if node has no children
-    else{
-      if(cur == head){
 	head = NULL;
       }
-      else if(cur->data <= parent->data){
-	parent->left = NULL;
+    }
+
+    //ELSE IF todelete has no left child
+    else if(todelete->left == NULL){
+      cout << "has no left child" << endl;
+      if(todelete != head){
+	if(parent->left == todelete){
+	  parent->left = todelete->right;
+	  cout << "todelete is left child" << endl;
+	}
+	else if(parent->right == todelete){
+	  parent->right = todelete->right;
+	  cout << "todelete is right child" << endl;
+	}
       }
       else{
-	parent->right = NULL;
+	head = todelete->right;
+	cout << "todelete is head" << endl;
       }
     }
-    delete cur;
+
+    else if(todelete->right == NULL){
+      cout << "todelete has no right child" << endl;
+    }
+    
+    //ELSE (todelete has left or two children)
+    else{
+      node* replacement;
+      if(todelete == head){
+	head = replacement;
+      }
+      else if(parent->left == todelete){
+	parent->left = replacement;
+      }
+      else if(parent->right == todelete){
+	parent->right = replacement;
+      }
+    }
+    delete todelete;
   }
   else{
     cout << "Does not exist: " << data << endl;
-  }
+  }   
   return 0;
 }
 
@@ -190,10 +187,10 @@ int BiSrchTree::visualize(){
 
 int BiSrchTree::visualize(node* cur, int level){
   //if has left child, go left
-  if(cur->left != NULL){
+  if(cur->right != NULL){
     //cout << "left" << endl;
     int newlevel = level + 1;
-    visualize(cur->left, newlevel);
+    visualize(cur->right, newlevel);
   }
   //print
   for(int i = level; i > 0; i--){
@@ -201,10 +198,10 @@ int BiSrchTree::visualize(node* cur, int level){
   }
   cout << cur->data << endl;
   //if right child go right
-  if(cur->right != NULL){
+  if(cur->left != NULL){
     //cout << "right" << endl;
     int newlevel = level + 1;
-    visualize(cur->right, newlevel);
+    visualize(cur->left, newlevel);
   }
   return 0;
 }
