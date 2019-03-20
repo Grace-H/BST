@@ -70,7 +70,11 @@ int BiSrchTree::insert(node* newnode, node* current){
 }
 
 int BiSrchTree::contains(int data, node* cur){
-  if(data == cur->data){
+  if(head == NULL){
+    cout << "head is NULL" << endl;
+    return 1;
+  }
+  else if(data == cur->data){
     return 0;
   }
   else if(data <= cur->data && cur->left != NULL){
@@ -110,12 +114,17 @@ int BiSrchTree::remove(int data){
       }
     }
     cout << "todelete: " << todelete->data << endl;
-    cout << "parent: " << parent->data << endl;
+    if(parent != NULL){
+      cout << "parent: " << parent->data << endl;
+    }
 
-    if(todelete->left == NULL){
-      cout << "todelete has no left child" << endl;
+    if(parent->right == todelete){
+      cout << "todelete is a right child at this point in time" << endl;
     }
     
+    else if(parent->left == todelete){
+      cout << "todelete is a left child at this point in time" << endl;
+    }
     //IF todelete has no children
     if(todelete->left == NULL && todelete->right == NULL){
       cout << "todelete has no children" << endl;
@@ -150,25 +159,41 @@ int BiSrchTree::remove(int data){
 	cout << "todelete is head" << endl;
       }
     }
-
-    else if(todelete->right == NULL){
-      cout << "todelete has no right child" << endl;
-    }
     
     //ELSE (todelete has left or two children)
     else{
-      node* replacement;
+      node* replace = todelete;
+      node* prev = replace;
+      replace = replace->left;
+      while(replace->right != NULL){
+	prev = replace;
+	replace = replace->right;
+      }
+      cout << "replace: " << replace->data << endl;
+      //transfer children
+      //IF todelete's left child is replacement
+      if(todelete->left == replace){
+	replace->right = todelete->right;
+      }
+
+
+      //change parent of todelete
+      //IF todelete is head
       if(todelete == head){
-	head = replacement;
+	head = replace;
       }
+      //ELSE IF todelete is a left child
       else if(parent->left == todelete){
-	parent->left = replacement;
+	cout << "todelete is left child of: " << parent->data << endl;
+	parent->left = replace;
       }
+      //ELSE IF todelete is a right child
       else if(parent->right == todelete){
-	parent->right = replacement;
+	cout << "todelete is right child of: " << parent->data << endl;
+	parent->right = replace;
       }
     }
-    delete todelete;
+    //delete todelete;
   }
   else{
     cout << "Does not exist: " << data << endl;
@@ -186,22 +211,27 @@ int BiSrchTree::visualize(){
 }
 
 int BiSrchTree::visualize(node* cur, int level){
+  if(head != NULL){
   //if has left child, go left
-  if(cur->right != NULL){
-    //cout << "left" << endl;
-    int newlevel = level + 1;
-    visualize(cur->right, newlevel);
+    if(cur->right != NULL){
+      //cout << "left" << endl;
+      int newlevel = level + 1;
+      visualize(cur->right, newlevel);
+    }
+    //print
+    for(int i = level; i > 0; i--){
+      cout << "    ";
+    }
+    cout << cur->data << endl;
+    //if right child go right
+    if(cur->left != NULL){
+      //cout << "right" << endl;
+      int newlevel = level + 1;
+      visualize(cur->left, newlevel);
+    }
   }
-  //print
-  for(int i = level; i > 0; i--){
-        cout << "    ";
-  }
-  cout << cur->data << endl;
-  //if right child go right
-  if(cur->left != NULL){
-    //cout << "right" << endl;
-    int newlevel = level + 1;
-    visualize(cur->left, newlevel);
+  else{
+    cout << "Tree is empty" << endl;
   }
   return 0;
 }
