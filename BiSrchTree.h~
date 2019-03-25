@@ -6,7 +6,7 @@ using namespace std;
 #ifndef BISRCHTREE_H
 #define BISRCHTREE_H
 
-Struct node{
+struct node{
   int data;
   node* right;
   node* left;
@@ -14,10 +14,15 @@ Struct node{
 
 class BiSrchTree{
  public:
+  BiSrchTree();
+  ~BiSrchTree();
   int insert(int data);
-  int retrieve(int data);
+  int insert(node* newnode, node* current);
+  int contains(int data, node* cur);
   int remove(int data);
-  int visulaize();
+  int remove(int data, node* cur);
+  int visualize();
+  int visualize(node* cur, int level);
  private:
   node* head;
 };

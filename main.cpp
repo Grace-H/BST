@@ -1,3 +1,8 @@
+/*Uses Binary Search Tree to store integer values
+ *Author: Grace Hunter
+ *Date: 24 March 2019
+ */
+
 #include <cstring>
 #include <iostream>
 #include <fstream>
@@ -86,12 +91,21 @@ int main(){
       //remove
       remove(tree, nums);
     }
+    //print tree
     else if(strcmp(printstr, input) == 0){
-      //visualize
+      tree->visualize();
     }
+    //quit
     else if(strcmp(quitstr, input) == 0){
       go = false;
-      //delete stuff
+      delete [] input;
+      delete [] quitstr;
+      delete [] printstr;
+      delete [] removestr;
+      delete [] insertstr;
+      delete [] filestr;
+      delete [] commandstr;
+      delete tree;
     }  
     else{
       cout << "not an option" << endl;

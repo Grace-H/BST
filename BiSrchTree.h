@@ -1,3 +1,9 @@
+/*header file for Binary Search Tree, implemented as BiSrchTree Class
+ *contains node struct
+ *Author: Grace Hunter
+ *Date: 24 March 2019
+ */
+
 #include <iostream>
 #include <cstring>
 
@@ -20,7 +26,6 @@ class BiSrchTree{
   int insert(node* newnode, node* current);
   int contains(int data, node* cur);
   int remove(int data);
-  int remove(int data, node* cur);
   int visualize();
   int visualize(node* cur, int level);
  private:
